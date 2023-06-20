@@ -9,19 +9,38 @@ d3.json(url).then(function(response) {
     let otuIDs = samples.map(sample => sample.otu_ids.slice(0,10));
     // create text for chart
     let otuLabels = samples.map(sample => sample.otu_labels.slice(0,10));
-    // trace for sample data
-    let trace1 = {
+    // trace for bar chart data
+    let barTrace = {
         x: sampleValues[0],
-        y: otuIDs[0],
+        y: otuIDs[0].map(id =>`OTU ${id}`),
         text: otuLabels,
         type: 'bar',
         orientation: 'h'
     };
     // data trace array
-    let traceData = [trace1];
+    let traceData = [barTrace];
 
     let layout = {
         title: 'OTU'
     };
     Plotly.newPlot('bar', traceData, layout)
+// trace for bubble chart data
+    let bubbleTrace = {
+        x: otuIDs[0],
+        y: sampleValues[0],
+        mode: 'markers',
+        marker: {
+            color: sampleValues[0],
+            size: sampleValues[0]
+        },
+        text: otuLabels,
+        type: 'bubble'
+    };
+    let layoutBubble = {
+        title: 'Bubble OTU'
+    };
+    Plotly.newPlot('bubble', [bubbleTrace], layoutBubble);
 });
+
+// select panel-body
+// d3.select('.panel-body')
